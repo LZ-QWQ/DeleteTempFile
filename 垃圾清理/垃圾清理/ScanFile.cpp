@@ -51,7 +51,7 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 	StringCchLength(pwchar_param_RootPath,
 		MAX_PATH,
 		&size_Length_of_RootPath);
-	if (size_Length_of_RootPath > (MAX_PATH - 3))
+	if (size_Length_of_RootPath > (MAX_PATH - 4))
 	{
 		wprintf_s(L"根目录路径太长");
 		return;
@@ -122,14 +122,16 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 					short_param_CmdRow_ShowScanInfo);
 
 				// 拼接垃圾文件的全路径，并把路径信息保存到指定文件
-				StringCchPrintf(wchar_TempFilePath,
+				if (StringCchPrintf(wchar_TempFilePath,
 					_countof(wchar_TempFilePath),
 					L"%ls\\%ls\r\n", // 拼接全路径
 					pwchar_param_RootPath,
-					strcut_Find.cFileName);
-				fun_SaveTempFilesInfoToFile(pwchar_param_SaveFile,
-					wchar_TempFilePath,
-					wcslen(wchar_TempFilePath) * sizeof(wchar_t));
+					strcut_Find.cFileName) == S_OK)
+				{
+					fun_SaveTempFilesInfoToFile(pwchar_param_SaveFile,
+						wchar_TempFilePath,
+						wcslen(wchar_TempFilePath) * sizeof(wchar_t));
+				}
 
 			}
 

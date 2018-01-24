@@ -2,5 +2,5 @@
  
 bool fun_AskUserIsDelete(void);
 
-bool fun_ReadAndDeleteFile(const wchar_t *pwchar_param_SaveFile,
-	DWORD dword_PointOfBejinToRead,DWORD dword_SizeOfFile);
+void fun_ReadAndDeleteFile(short short_param_CmdRow_ShowDeleteInfo, LPDWORD dword_param_BeginToRead,
+	HANDLE handle_File,FUNCB_SHOWDELETEINFO funcb_param_Delete);
