@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ScanFile.h"
 
 
@@ -6,11 +6,11 @@ bool fun_AskUserIsScan(void)
 {
 	wchar_t wchar_YesOrNo;
 
-	wprintf(L"ÊÇ·ñĞèÒªÉ¨ÃèWindows²Ù×÷ÏµÍ³À¬»øÎÄ¼ş(°´ÏÂy¼ü½øĞĞÉ¨Ãè»òÕßq¼üÍË³ö³ÌĞò)£¿ ");
+	wprintf(L"æ˜¯å¦éœ€è¦æ‰«æWindowsæ“ä½œç³»ç»Ÿåƒåœ¾æ–‡ä»¶(æŒ‰ä¸‹yé”®è¿›è¡Œæ‰«ææˆ–è€…qé”®é€€å‡ºç¨‹åº)ï¼Ÿ ");
 	do
 	{
 		wscanf_s(L"%lc", &wchar_YesOrNo, 1);
-		getwchar(); // ÎüÊÕ»Ø³µ»»ĞĞ
+		getwchar(); // å¸æ”¶å›è½¦æ¢è¡Œ
 	} while ((wchar_YesOrNo != L'y') && (wchar_YesOrNo != L'q'));
 
 	if (wchar_YesOrNo == L'q')
@@ -29,35 +29,35 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 	short short_param_CmdRow_ShowScanInfo,
 	FUNCB_SHOWSCANINFO funcb_param_Show)
 {
-	wchar_t wchar_DirPath[MAX_PATH] = { '\0' }; // Ä¿Â¼Â·¾¶»º³åÇø
-	wchar_t wchar_SubDirPath[MAX_PATH] = { '\0' }; // ×ÓÄ¿Â¼Â·¾¶»º³åÇø
-	wchar_t wchar_TempFilePath[MAX_PATH] = { '\0' }; // À¬»øÎÄ¼şµÄÈ«Â·¾¶
-	size_t size_Length_of_RootPath;                // Ä¿Â¼Â·¾¶µÄÊµ¼Ê³¤¶È
+	wchar_t wchar_DirPath[MAX_PATH] = { '\0' }; // ç›®å½•è·¯å¾„ç¼“å†²åŒº
+	wchar_t wchar_SubDirPath[MAX_PATH] = { '\0' }; // å­ç›®å½•è·¯å¾„ç¼“å†²åŒº
+	wchar_t wchar_TempFilePath[MAX_PATH] = { '\0' }; // åƒåœ¾æ–‡ä»¶çš„å…¨è·¯å¾„
+	size_t size_Length_of_RootPath;                // ç›®å½•è·¯å¾„çš„å®é™…é•¿åº¦
 
-	WIN32_FIND_DATA strcut_Find; // Ã¶¾ÙÎÄ¼şÊ±ĞèÒªµÄÊı¾İ½á¹¹Ìå    
-	HANDLE handle_FindFile = INVALID_HANDLE_VALUE; // ÎÄ¼ş¾ä±ú
+	WIN32_FIND_DATA strcut_Find; // æšä¸¾æ–‡ä»¶æ—¶éœ€è¦çš„æ•°æ®ç»“æ„ä½“    
+	HANDLE handle_FindFile = INVALID_HANDLE_VALUE; // æ–‡ä»¶å¥æŸ„
 
-												   // Ğ£Ñé´«µİ½øÀ´µÄ²ÎÊıÊÇ·ñºÏ·¨
+												   // æ ¡éªŒä¼ é€’è¿›æ¥çš„å‚æ•°æ˜¯å¦åˆæ³•
 	if ((pwchar_param_RootPath == NULL) ||
 		(wcslen(pwchar_param_RootPath) == 0))
 	{
-		wprintf_s(L"²ÎÊı²»ºÏ·¨");
+		wprintf_s(L"å‚æ•°ä¸åˆæ³•");
 		return;
 	}
 
-	// ¼ì²é´«ÈëµÄ¸ùÄ¿Â¼Â·¾¶ÊÇ·ñ¹ı³¤
-	// MAX_PATH-3 ±íÊ¾ĞèÒªÁô³ö3¸ö×Ö·ûÓÃÀ´¸ú×Ö·û´®"\*"½øĞĞÆ´½Ó£¬
-	// ÕâÑù²ÅÄÜ½øĞĞÃ¶¾ÙÄ¿Â¼
+	// æ£€æŸ¥ä¼ å…¥çš„æ ¹ç›®å½•è·¯å¾„æ˜¯å¦è¿‡é•¿
+	// MAX_PATH-3 è¡¨ç¤ºéœ€è¦ç•™å‡º3ä¸ªå­—ç¬¦ç”¨æ¥è·Ÿå­—ç¬¦ä¸²"\*"è¿›è¡Œæ‹¼æ¥ï¼Œ
+	// è¿™æ ·æ‰èƒ½è¿›è¡Œæšä¸¾ç›®å½•
 	StringCchLength(pwchar_param_RootPath,
 		MAX_PATH,
 		&size_Length_of_RootPath);
 	if (size_Length_of_RootPath > (MAX_PATH - 4))
 	{
-		wprintf_s(L"¸ùÄ¿Â¼Â·¾¶Ì«³¤");
+		wprintf_s(L"æ ¹ç›®å½•è·¯å¾„å¤ªé•¿");
 		return;
 	}
 
-	// ±£´æÂ·¾¶²¢¸ú×Ö·û´®"\*"½øĞĞÆ´½Ó£¬ĞÎ³ÉÈçÏÂ¸ñÊ½
+	// ä¿å­˜è·¯å¾„å¹¶è·Ÿå­—ç¬¦ä¸²"\*"è¿›è¡Œæ‹¼æ¥ï¼Œå½¢æˆå¦‚ä¸‹æ ¼å¼
 	// x:\xxxx\*
 	StringCchCopy(wchar_DirPath, MAX_PATH, pwchar_param_RootPath);
 	if (pwchar_param_RootPath[wcslen(pwchar_param_RootPath) - 1] == '\\')
@@ -70,22 +70,22 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 	}
 
 
-	// ¿ªÊ¼Ö´ĞĞÃ¶¾ÙÄ¿±êÄ¿Â¼
+	// å¼€å§‹æ‰§è¡Œæšä¸¾ç›®æ ‡ç›®å½•
 	handle_FindFile = FindFirstFile(wchar_DirPath, &strcut_Find);
 	if (handle_FindFile == INVALID_HANDLE_VALUE)
 	{
 		return;
 	}
-	// ÀûÓÃdo~whileÑ­»·½øĞĞÃ¶¾Ù²Ù×÷
+	// åˆ©ç”¨do~whileå¾ªç¯è¿›è¡Œæšä¸¾æ“ä½œ
 	do
 	{
 		if (strcut_Find.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
-			// ×ÓÄ¿Â¼(Èç¹ûÊÇ"."ºÍ".."Õâ2ÖÖÌØÊâÄ¿Â¼Ôò²»ĞèÒª½øĞĞÃ¶¾Ù)
+			// å­ç›®å½•(å¦‚æœæ˜¯"."å’Œ".."è¿™2ç§ç‰¹æ®Šç›®å½•åˆ™ä¸éœ€è¦è¿›è¡Œæšä¸¾)
 			if ((wcscmp(strcut_Find.cFileName, L".") != 0) &&
 				(wcscmp(strcut_Find.cFileName, L"..") != 0))
 			{
-				// Æ´½ÓĞÂµÄ×ÓÄ¿Â¼Â·¾¶£¬ĞÎ³ÉÈçÏÂ¸ñÊ½
+				// æ‹¼æ¥æ–°çš„å­ç›®å½•è·¯å¾„ï¼Œå½¢æˆå¦‚ä¸‹æ ¼å¼
 				// x:\xxxx\xxx
 				StringCchCopy(wchar_SubDirPath,
 					MAX_PATH,
@@ -99,13 +99,13 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 					strcut_Find.cFileName);
 
 
-				// Í¨ÖªÃüÁî¿ØÖÆÌ¨´òÓ¡É¨ÃèĞÅÏ¢(¸üĞÂÄ¿Â¼ÊıÄ¿)
+				// é€šçŸ¥å‘½ä»¤æ§åˆ¶å°æ‰“å°æ‰«æä¿¡æ¯(æ›´æ–°ç›®å½•æ•°ç›®)
 				(funcb_param_Show)(SCANINFO_TYPE_DIRCOUNT,
 					short_param_CmdRow_ShowScanInfo);
 
 
 
-				// µİ¹éÃ¶¾Ùµ±Ç°ĞÂµÄ×ÓÄ¿Â¼
+				// é€’å½’æšä¸¾å½“å‰æ–°çš„å­ç›®å½•
 				fun_EnumDirectory_listedTempFile(wchar_SubDirPath,
 					pwchar_param_SaveFile,
 					short_param_CmdRow_ShowScanInfo,
@@ -114,17 +114,17 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 		}
 		else
 		{
-			// ÎÄ¼ş(ÅĞ¶ÏÊÇ·ñÊÇÀ¬»øÎÄ¼ş.tmp)
+			// æ–‡ä»¶(åˆ¤æ–­æ˜¯å¦æ˜¯åƒåœ¾æ–‡ä»¶.tmp)
 			if (fun_IsTempFiles(strcut_Find.cFileName) == true)
 			{
-				// Í¨ÖªÃüÁî¿ØÖÆÌ¨´òÓ¡É¨ÃèĞÅÏ¢(¸üĞÂÀ¬»øÎÄ¼şÊıÄ¿)
+				// é€šçŸ¥å‘½ä»¤æ§åˆ¶å°æ‰“å°æ‰«æä¿¡æ¯(æ›´æ–°åƒåœ¾æ–‡ä»¶æ•°ç›®)
 				(funcb_param_Show)(SCANINFO_TYPE_TMPFILECOUNT,
 					short_param_CmdRow_ShowScanInfo);
 
-				// Æ´½ÓÀ¬»øÎÄ¼şµÄÈ«Â·¾¶£¬²¢°ÑÂ·¾¶ĞÅÏ¢±£´æµ½Ö¸¶¨ÎÄ¼ş
+				// æ‹¼æ¥åƒåœ¾æ–‡ä»¶çš„å…¨è·¯å¾„ï¼Œå¹¶æŠŠè·¯å¾„ä¿¡æ¯ä¿å­˜åˆ°æŒ‡å®šæ–‡ä»¶
 				if (StringCchPrintf(wchar_TempFilePath,
 					_countof(wchar_TempFilePath),
-					L"%ls\\%ls\r\n", // Æ´½ÓÈ«Â·¾¶
+					L"%ls\\%ls\r\n", // æ‹¼æ¥å…¨è·¯å¾„
 					pwchar_param_RootPath,
 					strcut_Find.cFileName) == S_OK)
 				{
@@ -136,7 +136,7 @@ void fun_EnumDirectory_listedTempFile(const wchar_t *pwchar_param_RootPath,
 			}
 
 
-			// Í¨ÖªÃüÁî¿ØÖÆÌ¨´òÓ¡É¨ÃèĞÅÏ¢(¸üĞÂÎÄ¼şÊıÄ¿)
+			// é€šçŸ¥å‘½ä»¤æ§åˆ¶å°æ‰“å°æ‰«æä¿¡æ¯(æ›´æ–°æ–‡ä»¶æ•°ç›®)
 			(funcb_param_Show)(SCANINFO_TYPE_FILECOUNT,
 				short_param_CmdRow_ShowScanInfo);
 
@@ -162,7 +162,7 @@ bool fun_IsTempFiles(const wchar_t *pwchar_param_FileName)
 		return false;
 	}
 
-	// ÅĞ¶ÏÊÇ·ñÊÇ.tmpºó×ºÃû
+	// åˆ¤æ–­æ˜¯å¦æ˜¯.tmpåç¼€å
 	if (_wcsicmp(pwchar_Ext, L".tmp") == 0)
 	{
 		return true;
@@ -182,8 +182,8 @@ bool fun_SaveTempFilesInfoToFile(const wchar_t *pwchar_param_SaveFile,
 
 	DWORD dword_NumberOfBytesToWrite = 0;
 
-	// Í¨¹ıCreateFile()º¯ÊıµÄOPEN_EXISTING²ÎÊı±êÖ¾Î»ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ£¬
-	// Èç¹û²»´æÔÚÔò´´½¨
+	// é€šè¿‡CreateFile()å‡½æ•°çš„OPEN_EXISTINGå‚æ•°æ ‡å¿—ä½åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨ï¼Œ
+	// å¦‚æœä¸å­˜åœ¨åˆ™åˆ›å»º
 	handle_File = CreateFile(pwchar_param_SaveFile,
 		GENERIC_WRITE,
 		0,
@@ -193,7 +193,7 @@ bool fun_SaveTempFilesInfoToFile(const wchar_t *pwchar_param_SaveFile,
 		NULL);
 	if (handle_File == INVALID_HANDLE_VALUE)
 	{
-		// Èç¹û²»´æÔÚ,Ôò´´½¨ĞÂÎÄ¼ş
+		// å¦‚æœä¸å­˜åœ¨,åˆ™åˆ›å»ºæ–°æ–‡ä»¶
 		handle_File = CreateFile(pwchar_param_SaveFile,
 			GENERIC_WRITE,
 			0,
@@ -203,14 +203,14 @@ bool fun_SaveTempFilesInfoToFile(const wchar_t *pwchar_param_SaveFile,
 			NULL);
 		if (handle_File == INVALID_HANDLE_VALUE)
 		{
-			// ´´½¨Ê§°Ü£¬Ôò·µ»Ø
+			// åˆ›å»ºå¤±è´¥ï¼Œåˆ™è¿”å›
 			return false;
 		}
 		else
 		{
-			// ÓÉÓÚWindowsÏµÍ³ÏÂµÄ¼ÇÊÂ±¾Ä¬ÈÏ´ò¿ª·½Ê½ÊÇANSI±àÂë£¬
-			// ËùÒÔ±ØĞëÏÈÉèÖÃUnicode±àÂë·½Ê½´ò¿ª
-			// Ğ´Èë0xfeffÈÃ¼ÇÊÂ±¾ÒÔUnicode·½Ê½´ò¿ª£¬ÖĞÎÄ²»»áÂÒÂë
+			// ç”±äºWindowsç³»ç»Ÿä¸‹çš„è®°äº‹æœ¬é»˜è®¤æ‰“å¼€æ–¹å¼æ˜¯ANSIç¼–ç ï¼Œ
+			// æ‰€ä»¥å¿…é¡»å…ˆè®¾ç½®Unicodeç¼–ç æ–¹å¼æ‰“å¼€
+			// å†™å…¥0xfeffè®©è®°äº‹æœ¬ä»¥Unicodeæ–¹å¼æ‰“å¼€ï¼Œä¸­æ–‡ä¸ä¼šä¹±ç 
 			WORD dword_UnicodeFlag = UNICODE_HEAD_FLAG;
 			WriteFile(handle_File,
 				&dword_UnicodeFlag,
@@ -222,12 +222,12 @@ bool fun_SaveTempFilesInfoToFile(const wchar_t *pwchar_param_SaveFile,
 	}
 	else
 	{
-		// ÉèÖÃĞ´ÈëÎÄ¼şÄÚÈİµÄÎ»ÖÃ(ÎªÁË×·¼ÓĞÂÄÚÈİ£¬±ØĞëÉèÖÃµ½ÎÄ¼şÎ²²¿)
-		// Èç¹ûĞ´ÈëÎÄ¼şµÄ×ÜÄÚÈİ´óĞ¡³¬¹ı4G£¬¿ÉÒÔ¿¼ÂÇÊ¹ÓÃSetFilePointerEx
+		// è®¾ç½®å†™å…¥æ–‡ä»¶å†…å®¹çš„ä½ç½®(ä¸ºäº†è¿½åŠ æ–°å†…å®¹ï¼Œå¿…é¡»è®¾ç½®åˆ°æ–‡ä»¶å°¾éƒ¨)
+		// å¦‚æœå†™å…¥æ–‡ä»¶çš„æ€»å†…å®¹å¤§å°è¶…è¿‡4Gï¼Œå¯ä»¥è€ƒè™‘ä½¿ç”¨SetFilePointerEx
 		SetFilePointer(handle_File, 0, NULL, FILE_END);
 	}
 
-	// Ğ´ÈëÖ¸¶¨ÄÚÈİ
+	// å†™å…¥æŒ‡å®šå†…å®¹
 	WriteFile(handle_File,
 		pwchar_param_Buffer,
 		dword_param_BufferSize,
@@ -236,7 +236,7 @@ bool fun_SaveTempFilesInfoToFile(const wchar_t *pwchar_param_SaveFile,
 
 	FlushFileBuffers(handle_File);
 
-	// ÊÍ·ÅÎÄ¼ş¶ÔÏó×ÊÔ´
+	// é‡Šæ”¾æ–‡ä»¶å¯¹è±¡èµ„æº
 	CloseHandle(handle_File);
 
 	return true;
